@@ -53,12 +53,26 @@ That forces you to make decisions by hand that later got abstracted into
 tooling, and making them by hand teaches you what the tooling is for. Three
 problems were unavoidable and are still the three that matter:
 
-**A confidently wrong answer creates a real obligation.** If the bot invents a
-return window or quotes a price that isn't current, the business either honours
-it or publicly walks it back. Both cost more than the ticket was worth. This is
-the failure mode that separates customer-facing LLM features from internal
-ones, and it's why the scope of what the bot is allowed to assert matters more
-than how well it writes.
+**A confidently wrong answer creates a real obligation.** This is the one that
+reframed how I think about customer-facing LLM features, and it's worth being
+precise about the mechanism rather than hand-waving at "hallucination."
+
+When a bot answers a customer, it isn't just producing text. It is making a
+statement on behalf of a business, to that business's customer, in writing. If
+it invents a return window or quotes a price that is no longer current, the
+business has two options and both are expensive: honour terms it never set, or
+tell a customer the thing it told them was wrong. The cost of the error has
+nothing to do with the cost of the ticket it was answering.
+
+What follows from that is a design rule, not a prompt-engineering problem. The
+bot should be structurally unable to assert a fact it cannot read from the
+client's own system. Prices, stock, order status and policy are retrieval, not
+generation. Tone, phrasing and explanation are generation. Drawing that line
+inside the product is worth more than any amount of instructing the model to be
+careful, because the first survives a model change and the second doesn't.
+
+I'd rather present this as the analysis it is than dress it up as a war story.
+The structural argument is what I actually took away from the work.
 
 **A non-technical client cannot evaluate it, so they evaluate you.** The buyer
 has no way to judge output quality at volume. What they can judge is whether
